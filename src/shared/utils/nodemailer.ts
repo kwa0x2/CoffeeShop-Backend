@@ -1,0 +1,32 @@
+import * as nodemailer from "nodemailer"
+import env from "../../shared/utils/env";
+
+const transports = nodemailer.createTransport({
+    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    auth: {
+        user: env.EMAIL,
+        pass: env.EMAIL_PASSWORD,
+    }
+})
+
+export const sendVerificationEmail = async (email: string, confirmLink: string) => {
+    try {
+        await transports.sendMail({
+            from: {
+                name: "Mordecai ve Rigby",
+                address: "asdasdsa",
+            },
+            to: email,
+            subject: "Verification email",
+            html: `<a href="${confirmLink}">hesabını onaylamak için tıkla</a>`,
+        })
+        return true
+    }
+    catch (error) {
+        console.error(error)
+        return false;
+    }
+}
