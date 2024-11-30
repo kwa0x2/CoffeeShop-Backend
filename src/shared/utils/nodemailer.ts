@@ -16,8 +16,8 @@ export const sendVerificationEmail = async (email: string, confirmLink: string) 
     try {
         await transports.sendMail({
             from: {
-                name: "Mordecai ve Rigby",
-                address: "asdasdsa",
+                name: "CoffeeShop",
+                address: env.EMAIL,
             },
             to: email,
             subject: "Verification email",
