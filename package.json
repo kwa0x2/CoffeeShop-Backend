@@ -18,9 +18,12 @@
   "description": "",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "connect-redis": "^8.0.0",
     "dotenv": "^16.4.5",
     "envalid": "^8.0.0",
     "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "ioredis": "^5.4.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.7.3",
     "morgan": "^1.10.0",
@@ -29,6 +32,7 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
+    "@types/express-session": "^1.18.1",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/mongoose": "^5.11.96",
     "@types/morgan": "^1.9.9",

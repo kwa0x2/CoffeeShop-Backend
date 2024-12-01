@@ -97,11 +97,23 @@ export const login: RequestHandler<unknown, unknown, LoginBody, unknown> = async
             throw createHttpError(400, "Missing parameters");
         }
 
-        await loginUseCase.execute(email, password);
+        const user = await loginUseCase.execute(email, password);
 
+        req.session.user_id = user._id
         res.status(200).json({ message: "User login successfully!" });
     }
     catch (error) {
         next(error)
     }
+}
+
+export const logout: RequestHandler = async (req, res, next) => {
+    req.session.destroy((error)=>{
+        if (error) {
+            next(error)
+        } else {
+            res.clearCookie(env.COOKIE_NAME)
+            res.sendStatus(200)
+        }
+    })
 }
