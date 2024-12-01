@@ -18,7 +18,5 @@ export class CheckExistsUseCase{
         if (existingUserEmail){
             throw createHttpError(409, 'A user with this email address already exists.');
         }
-
-        // const newUser = await this.userService.createUser(name, email, password, surname)
     }
 }
