@@ -8,5 +8,7 @@ export default cleanEnv(process.env, {
     PORT: port(),
     EMAIL: email(),
     EMAIL_PASSWORD: str(),
-    JWT_SECRET: str()
+    JWT_SECRET: str(),
+    COOKIE_NAME: str(),
+    SESSION_SECRET: str()
 });
