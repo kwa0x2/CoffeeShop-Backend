@@ -5,9 +5,12 @@ import jwt from 'jsonwebtoken';
 import {sendVerificationEmail} from "../../shared/utils/nodemailer";
 import env from "../../shared/utils/env";
 import {SignUpUseCase} from "../../application/use-cases/sign-up.use-case";
+import {LoginUseCase} from "../../application/use-cases/login.use-case";
+import bcrypt from "bcrypt";
 
 const checkExistsUseCase = new CheckExistsUseCase();
 const signUpUseCase = new SignUpUseCase();
+const loginUseCase = new LoginUseCase();
 
 interface SignUpBody {
     name: string;
@@ -26,7 +29,9 @@ export const signUp: RequestHandler<unknown, unknown, SignUpBody, unknown> = asy
 
         await checkExistsUseCase.execute(name, email);
 
-        const tokenPayload = {name:name, email: email, password: password, surname: surname};
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const tokenPayload = {name:name, email: email, password: hashedPassword, surname: surname};
         const token = jwt.sign(tokenPayload, env.JWT_SECRET, { expiresIn: '5m' });
 
         const confirmLink = `http://localhost:7238/api/auth/email-verify?token=${token}`;
@@ -77,3 +82,26 @@ export const emailVerify: RequestHandler = async (req, res, next) => {
         next(error);
     }
 };
+
+
+interface LoginBody {
+    email: string;
+    password: string;
+}
+
+export const login: RequestHandler<unknown, unknown, LoginBody, unknown> = async (req, res, next) => {
+    const {email, password} = req.body;
+
+    try {
+        if (!email || !password) {
+            throw createHttpError(400, "Missing parameters");
+        }
+
+        await loginUseCase.execute(email, password);
+
+        res.status(200).json({ message: "User login successfully!" });
+    }
+    catch (error) {
+        next(error)
+    }
+}
