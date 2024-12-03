@@ -1,5 +1,4 @@
 import {UserModel} from "../../domain/models/user.model";
-import bcrypt from "bcrypt";
 
 export class UserRepository {
     async getUserByName(name: string) {
