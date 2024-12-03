@@ -7,6 +7,7 @@ import env from "./shared/utils/env";
 import Redis from "ioredis";
 import session from "express-session";
 import {RedisStore} from "connect-redis"
+import productRoutes from "./interfaces/routes/product.routes";
 
 const app = express();
 const port = env.PORT;
@@ -45,6 +46,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/product", productRoutes);
 
 app.use((req, res, next) => {
     next(createHttpError(404, "Endpoint not found"));
