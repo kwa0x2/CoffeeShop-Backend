@@ -4,10 +4,8 @@ import authRoutes from "./interfaces/routes/auth.routes";
 import createHttpError, { isHttpError } from "http-errors";
 import morgan from "morgan";
 import env from "./shared/utils/env";
-import Redis from "ioredis";
-import session from "express-session";
-import {RedisStore} from "connect-redis"
 import productRoutes from "./interfaces/routes/product.routes";
+import {redisSession} from "./infrastructure/third-party/redis";
 
 const app = express();
 const port = env.PORT;
@@ -17,29 +15,7 @@ app.use(morgan("dev"));
 
 connecToDatabase();
 
-export const redisClient = new Redis({
-    host: "localhost",
-    port: 6379,
-    password: "kwasecpass",
-});
-
-app.use(
-    session({
-        name: env.COOKIE_NAME,
-        store: new RedisStore({
-            client: redisClient,
-            disableTouch: true,
-        }),
-        cookie: {
-            maxAge: 1000 * 60 * 60 * 24,
-            httpOnly: false,
-            secure: false,
-        },
-        secret: env.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: false,
-    })
-);
+app.use(redisSession);
 
 app.get("/", (req: Request, res: Response) => {
     res.send("server is running - kwa");

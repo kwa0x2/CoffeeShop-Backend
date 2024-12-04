@@ -1,5 +1,6 @@
 import {GetAllProductsUseCase} from "../../application/use-cases/get-all-products.use-case";
 import {RequestHandler} from "express";
+import {redisClient} from "../../infrastructure/third-party/redis";
 
 export class ProductController {
     private getAllProductsUseCase: GetAllProductsUseCase
@@ -11,6 +12,10 @@ export class ProductController {
     getAll: RequestHandler = async (req, res, next) => {
         try {
             const products = await this.getAllProductsUseCase.execute()
+
+            // 1 day exp
+            redisClient.set("products", JSON.stringify(products), "EX", 86400);
+
             res.status(200).json(products)
         }
         catch (error) {
