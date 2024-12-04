@@ -1,4 +1,5 @@
 import {ProductRepository} from "../../infrastructure/repositories/product.repository";
+import {IProduct} from "../../domain/models/product.model";
 
 export class ProductService {
     private productRepository: ProductRepository;
@@ -8,6 +9,10 @@ export class ProductService {
     }
 
     async getProducts() {
-        return await this.productRepository.findAll()
+        return this.productRepository.findAll()
+    }
+
+    async getProductsFromCache(): Promise<IProduct[]> {
+        return  this.productRepository.getProductsFromCache()
     }
 }

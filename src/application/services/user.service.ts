@@ -10,19 +10,19 @@ export class UserService {
     }
 
     async getUserByName(name: string) {
-        return await this.userRepository.getUserByName(name);
+        return this.userRepository.getUserByName(name);
     }
 
     async getUserByEmail(email: string) {
-        return await this.userRepository.getUserByEmail(email);
+        return this.userRepository.getUserByEmail(email);
     }
 
     async createUser(name: string, email: string, password: string, surname?: string) {
-        return await this.userRepository.createUser(name, email, password, surname)
+        return this.userRepository.createUser(name, email, password, surname)
     }
 
     async login(email: string, password: string) {
-        const user = await  this.userRepository.getUserByEmail(email);
+        const user = await this.userRepository.getUserByEmail(email);
         if (!user) {
             throw createHttpError(401, 'Invalid email or password');
         }

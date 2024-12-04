@@ -6,6 +6,7 @@ import morgan from "morgan";
 import env from "./shared/utils/env";
 import productRoutes from "./interfaces/routes/product.routes";
 import {redisSession} from "./infrastructure/third-party/redis";
+import basketRoutes from "./interfaces/routes/basket.routes";
 
 const app = express();
 const port = env.PORT;
@@ -23,6 +24,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/product", productRoutes);
+app.use("/api/basket", basketRoutes);
 
 app.use((req, res, next) => {
     next(createHttpError(404, "Endpoint not found"));

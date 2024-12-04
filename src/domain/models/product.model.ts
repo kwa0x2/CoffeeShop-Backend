@@ -1,7 +1,7 @@
 import mongoose = require('mongoose');
 
-interface IProduct extends Document {
-    _id: mongoose.Schema.Types.ObjectId;
+export interface IProduct extends Document {
+    _id: mongoose.Types.ObjectId;
     title: string;
     category_title:string
     description: string;
