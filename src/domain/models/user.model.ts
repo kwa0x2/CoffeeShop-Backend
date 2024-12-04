@@ -1,7 +1,7 @@
 import mongoose = require('mongoose');
 
 interface IUser extends Document {
-    _id: mongoose.Schema.Types.ObjectId;
+    _id: mongoose.Types.ObjectId;
     name: string;
     surname: string;
     password: string;
