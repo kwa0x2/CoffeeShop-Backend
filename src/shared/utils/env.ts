@@ -10,5 +10,8 @@ export default cleanEnv(process.env, {
     EMAIL_PASSWORD: str(),
     JWT_SECRET: str(),
     COOKIE_NAME: str(),
-    SESSION_SECRET: str()
+    SESSION_SECRET: str(),
+    REDIS_HOST: str(),
+    REDIS_PORT: port(),
+    REDIS_PASSWORD: str()
 });
