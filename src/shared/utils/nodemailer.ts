@@ -30,3 +30,22 @@ export const sendVerificationEmail = async (email: string, confirmLink: string) 
         return false;
     }
 }
+
+export const sendOrderMail = async (email: string, order: string) => {
+    try {
+        await transports.sendMail({
+            from: {
+                name: "CoffeeShop",
+                address: env.EMAIL,
+            },
+            to:email,
+            subject: "Order Mail",
+            html:`<p>${order}</p>`
+        })
+        return true
+    }
+    catch (error) {
+        console.error(error)
+        return false;
+    }
+}

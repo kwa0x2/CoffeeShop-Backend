@@ -7,6 +7,7 @@ import env from "./shared/utils/env";
 import productRoutes from "./interfaces/routes/product.routes";
 import {redisSession} from "./infrastructure/third-party/redis";
 import basketRoutes from "./interfaces/routes/basket.routes";
+import {Consumer} from "./infrastructure/rabbitmq/consumer";
 
 const app = express();
 const port = env.PORT;
@@ -21,6 +22,12 @@ app.use(redisSession);
 app.get("/", (req: Request, res: Response) => {
     res.send("server is running - kwa");
 });
+
+const consumer = new Consumer();
+consumer
+    .consumeQueue("order")
+    .then(() => console.log("RabbitMQ consumer started successfully"))
+    .catch((err) => console.error("Error starting RabbitMQ consumer:", err));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/product", productRoutes);
@@ -42,6 +49,8 @@ app.use(
         res.status(statusCode).json({ error: errorMessage });
     }
 );
+
+
 
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
