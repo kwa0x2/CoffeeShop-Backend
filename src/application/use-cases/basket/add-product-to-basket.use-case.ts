@@ -24,29 +24,29 @@ export class AddProductToBasketUseCase {
         const existingItem = basketData.find(item => item.product_id === product_id);
         const selectedProduct =  productsData.find(item => item._id === product_id);
 
-        if (selectedProduct) {
+        if (!selectedProduct) {
             throw createHttpError(404, "Product not found.");
         }
 
 
         if(existingItem) {
-            // if (selectedProduct.stock_quantity >=existingItem.quantity + 1) {
-            //    existingItem.quantity += 1
-            // }else {
-            //     throw createHttpError(400, "Insufficient stock for the product.");
-            // }
+            if (selectedProduct.stock_quantity >=existingItem.quantity + 1) {
+               existingItem.quantity += 1
+            }else {
+                throw createHttpError(400, "Insufficient stock for the product.");
+            }
         } else {
-            // if (selectedProduct.stock_quantity > 0) {
-            //     const newBasketItem: BasketItem = {
-            //         product_id: selectedProduct._id,
-            //         product_title: selectedProduct.title,
-            //         quantity: 1,
-            //         product_price: selectedProduct.price,
-            //     }
-            //     basketData.push(newBasketItem);
-            // } else {
-            //     throw createHttpError(400, "The product is out of stock.");
-            // }
+            if (selectedProduct.stock_quantity > 0) {
+                const newBasketItem: BasketItem = {
+                    product_id: selectedProduct._id,
+                    product_title: selectedProduct.title,
+                    quantity: 1,
+                    product_price: selectedProduct.price,
+                }
+                basketData.push(newBasketItem);
+            } else {
+                throw createHttpError(400, "The product is out of stock.");
+            }
         }
 
         await this.basketService.setBasketByUserID(user_id, basketData)
