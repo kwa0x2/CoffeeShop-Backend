@@ -1,10 +1,10 @@
 import {RequestHandler} from "express";
 import mongoose from "mongoose";
 import createHttpError from "http-errors";
-import {AddProductToBasketUseCase} from "../../application/use-cases/add-product-to-basket.use-case";
-import {GetBasketUseCase} from "../../application/use-cases/get-basket.use-case";
-import {RemoveItemFromBasketUseCase} from "../../application/use-cases/remove-item-from-basket.use-case";
-import {OrderBasketUseCase} from "../../application/use-cases/order-basket.use-case";
+import {AddProductToBasketUseCase} from "../../application/use-cases/basket/add-product-to-basket.use-case";
+import {GetBasketUseCase} from "../../application/use-cases/basket/get-basket.use-case";
+import {RemoveItemFromBasketUseCase} from "../../application/use-cases/basket/remove-item-from-basket.use-case";
+import {OrderBasketUseCase} from "../../application/use-cases/basket/order-basket.use-case";
 
 interface ProductIDBody {
     product_id: mongoose.Types.ObjectId;
@@ -25,8 +25,11 @@ export class  BasketController {
 
     getBasket: RequestHandler = async (req,res,next) => {
         try {
-            const user_id = new mongoose.Types.ObjectId("675129e0bb2eaa4f71fb1632")
-            const basket = await this.getBasketUseCase.execute(user_id)
+            if (!req.session.user_id) {
+                throw createHttpError(400, "User ID is missing from the session.");
+            }
+
+            const basket = await this.getBasketUseCase.execute(req.session.user_id)
             res.status(200).json(basket)
         }
         catch (error) {
@@ -41,29 +44,33 @@ export class  BasketController {
             if (!product_id) {
                 throw createHttpError(400, "Missing parameters");
             }
+            if (!req.session.user_id) {
+                throw createHttpError(400, "User ID is missing from the session.");
+            }
 
-            const user_id = new mongoose.Types.ObjectId("675129e0bb2eaa4f71fb1632")
-            await this.addProductToBasketUseCase.execute(user_id, product_id)
+            await this.addProductToBasketUseCase.execute(req.session.user_id, product_id)
 
-            res.sendStatus(200)
+            res.status(200).json({message: "Product successfully added to basket"})
         }
         catch (error) {
             next(error);
         }
     }
 
-    removeItemFromBasket: RequestHandler<unknown, unknown, ProductIDBody, unknown> = async (req,res,next) => {
+    removeProductFromBasket: RequestHandler<unknown, unknown, ProductIDBody, unknown> = async (req,res,next) => {
         const product_id = req.body.product_id;
 
         try{
             if (!product_id) {
                 throw createHttpError(400, "Missing parameters");
             }
+            if (!req.session.user_id) {
+                throw createHttpError(400, "User ID is missing from the session.");
+            }
 
-            const user_id = new mongoose.Types.ObjectId("675129e0bb2eaa4f71fb1632")
-            await this.removeItemFromBasketUseCase.execute(user_id, product_id)
+            await this.removeItemFromBasketUseCase.execute(req.session.user_id, product_id)
 
-            res.sendStatus(200)
+            res.status(200).json({message: "Product successfully removed from basket"})
         }
         catch (error) {
             next(error);
@@ -72,9 +79,12 @@ export class  BasketController {
 
     orderBasket: RequestHandler = async (req,res,next) => {
         try {
-            const userId = new mongoose.Types.ObjectId("675129e0bb2eaa4f71fb1632");
-            const result = await this.orderBasketUseCase.execute(userId);
-            res.status(200).json({ success: result });
+            if (!req.session.user_id) {
+                throw createHttpError(400, "User ID is missing from the session.");
+            }
+
+            await this.orderBasketUseCase.execute(req.session.user_id);
+            res.status(200).json({ message: "Failed to order basket" });
         } catch (error) {
             next(error);
         }

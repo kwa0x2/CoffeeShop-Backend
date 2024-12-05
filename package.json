@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "dist/server.js",
   "scripts": {
-    "start": "ts-node src/server.ts"
+    "start": "ts-node src/server.ts && npm run sentry:sourcemaps",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org nettasec --project node-express ./dist && sentry-cli sourcemaps upload --org nettasec --project node-express ./dist"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,10 @@
   "homepage": "https://github.com/kwa0x2/CoffeeShop-Backend#readme",
   "description": "",
   "dependencies": {
+    "@sentry/cli": "^2.39.1",
+    "@sentry/integrations": "^7.114.0",
+    "@sentry/node": "^8.42.0",
+    "@sentry/profiling-node": "^8.42.0",
     "amqplib": "^0.10.5",
     "bcrypt": "^5.1.1",
     "connect-redis": "^8.0.0",

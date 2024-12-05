@@ -1,11 +1,11 @@
-import {CheckExistsUseCase} from "../../application/use-cases/check-exists.use-case";
+import {CheckExistsUseCase} from "../../application/use-cases/auth/check-exists.use-case";
 import {RequestHandler} from "express";
 import createHttpError from "http-errors";
 import jwt from 'jsonwebtoken';
 import {sendVerificationEmail} from "../../shared/utils/nodemailer";
 import env from "../../shared/utils/env";
-import {SignUpUseCase} from "../../application/use-cases/sign-up.use-case";
-import {LoginUseCase} from "../../application/use-cases/login.use-case";
+import {SignUpUseCase} from "../../application/use-cases/auth/sign-up.use-case";
+import {LoginUseCase} from "../../application/use-cases/auth/login.use-case";
 import bcrypt from "bcrypt";
 
 interface SignUpBody {
@@ -39,7 +39,7 @@ export class AuthController {
                 throw createHttpError(400, 'Missing parameters');
             }
 
-            await this.checkExistsUseCase.execute(name, email);
+            await this.checkExistsUseCase.execute(email);
 
             const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -118,7 +118,7 @@ export class AuthController {
                 next(error)
             } else {
                 res.clearCookie(env.COOKIE_NAME)
-                res.sendStatus(200)
+                res.status(200).json({message: "User logout successfully!"})
             }
         })
     }

@@ -1,6 +1,6 @@
 import {IProduct, Product} from "../../domain/models/product.model";
-import {redisClient} from "../third-party/redis";
 import mongoose from "mongoose";
+import {redisClient} from "../redis/client";
 
 export class ProductRepository {
     async findAll() {

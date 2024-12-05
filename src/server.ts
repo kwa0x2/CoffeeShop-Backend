@@ -5,9 +5,14 @@ import createHttpError, { isHttpError } from "http-errors";
 import morgan from "morgan";
 import env from "./shared/utils/env";
 import productRoutes from "./interfaces/routes/product.routes";
-import {redisSession} from "./infrastructure/third-party/redis";
 import basketRoutes from "./interfaces/routes/basket.routes";
 import {Consumer} from "./infrastructure/rabbitmq/consumer";
+import {authMiddleware} from "./interfaces/middlewares/auth.middleware";
+import {redisSession} from "./infrastructure/redis/session";
+import {initSentry} from "./infrastructure/third-party/sentry";
+import * as Sentry from "@sentry/node";
+
+initSentry();
 
 const app = express();
 const port = env.PORT;
@@ -31,24 +36,31 @@ consumer
 
 app.use("/api/auth", authRoutes);
 app.use("/api/product", productRoutes);
-app.use("/api/basket", basketRoutes);
+app.use("/api/basket",authMiddleware, basketRoutes);
+
 
 app.use((req, res, next) => {
     next(createHttpError(404, "Endpoint not found"));
 });
 
-app.use(
-    (error: unknown, req: Request, res: Response, next: NextFunction) => {
-        console.log(error);
-        let errorMessage = "An unknown error occurred";
-        let statusCode = 500;
-        if (isHttpError(error)) {
-            statusCode = error.status;
-            errorMessage = error.message;
-        }
-        res.status(statusCode).json({ error: errorMessage });
+Sentry.setupExpressErrorHandler(app);
+
+
+app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
+    if (error instanceof Error) {
+        Sentry.captureException(error);
     }
-);
+
+    let errorMessage = "An unknown error occurred";
+    let statusCode = 500;
+
+    if (isHttpError(error)) {
+        statusCode = error.status;
+        errorMessage = error.message;
+    }
+
+    res.status(statusCode).json({ error: errorMessage });
+});
 
 
 

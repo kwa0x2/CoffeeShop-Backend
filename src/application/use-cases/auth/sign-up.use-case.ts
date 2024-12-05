@@ -1,4 +1,4 @@
-import { UserService } from "../services/user.service";
+import { UserService } from "../../services/user.service";
 import { CheckExistsUseCase } from "./check-exists.use-case";
 
 export class SignUpUseCase {
@@ -11,7 +11,7 @@ export class SignUpUseCase {
     }
 
     async execute(name: string, email: string, password: string, surname?: string) {
-        await this.checkExistsUseCase.execute(name, email);
+        await this.checkExistsUseCase.execute(email);
 
         const newUser = await this.userService.createUser(name, email, password, surname);
         return newUser;

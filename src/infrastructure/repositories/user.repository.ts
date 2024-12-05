@@ -6,10 +6,6 @@ export class UserRepository {
         return UserModel.findById(user_id);
     }
 
-    async getUserByName(name: string) {
-        return  UserModel.findOne({ name })
-    }
-
     async getUserByEmail(email: string) {
         return UserModel.findOne({ email })
     }

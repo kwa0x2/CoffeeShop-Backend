@@ -1,4 +1,4 @@
-import {BasketService} from "../services/basket.service";
+import {BasketService} from "../../services/basket.service";
 import mongoose from "mongoose";
 
 export class GetBasketUseCase {

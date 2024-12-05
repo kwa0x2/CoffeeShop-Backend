@@ -6,7 +6,7 @@ const basketController = new BasketController();
 
 router.post("", basketController.addProductToBasket)
 router.get("", basketController.getBasket)
-router.delete("", basketController.removeItemFromBasket)
+router.delete("", basketController.removeProductFromBasket)
 router.post("/order", basketController.orderBasket)
 
 export default router;
