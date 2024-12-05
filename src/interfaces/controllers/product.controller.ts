@@ -1,6 +1,6 @@
-import {GetAllProductsUseCase} from "../../application/use-cases/get-all-products.use-case";
+import {GetAllProductsUseCase} from "../../application/use-cases/product/get-all-products.use-case";
 import {RequestHandler} from "express";
-import {redisClient} from "../../infrastructure/third-party/redis";
+import {redisClient} from "../../infrastructure/redis/client";
 
 export class ProductController {
     private getAllProductsUseCase: GetAllProductsUseCase

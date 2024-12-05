@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { redisClient } from "../../infrastructure/third-party/redis";
+import {redisClient} from "../../infrastructure/redis/client";
 
 export const productsCacheMiddleware: RequestHandler = async (req, res, next) => {
     try {

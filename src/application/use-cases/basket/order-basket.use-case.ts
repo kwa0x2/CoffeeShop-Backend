@@ -1,7 +1,7 @@
-import {UserService} from "../services/user.service";
+import {UserService} from "../../services/user.service";
 import mongoose from "mongoose";
 import createHttpError from "http-errors";
-import {sendToQueue} from "../../infrastructure/rabbitmq/producer";
+import {sendToQueue} from "../../../infrastructure/rabbitmq/producer";
 import {GetBasketUseCase} from "./get-basket.use-case";
 
 export class OrderBasketUseCase {

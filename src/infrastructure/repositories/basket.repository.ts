@@ -1,6 +1,6 @@
 import {BasketItem} from "../../domain/entities/basket";
-import mongoose, {mongo} from "mongoose";
-import {redisClient} from "../third-party/redis";
+import mongoose from "mongoose";
+import {redisClient} from "../redis/client";
 
 export class BasketRepository {
 
@@ -14,7 +14,6 @@ export class BasketRepository {
                 return JSON.parse(basket)
             }
             catch(error) {
-                // remember: sentry handle here
                 return []
             }
         }
