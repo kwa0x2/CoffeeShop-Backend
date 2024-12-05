@@ -1,12 +1,17 @@
 import {UserRepository} from "../../infrastructure/repositories/user.repository";
 import createHttpError from "http-errors";
 import bcrypt from 'bcrypt';
+import mongoose from "mongoose";
 
 export class UserService {
     private userRepository: UserRepository;
 
     constructor() {
         this.userRepository = new UserRepository();
+    }
+
+    async getUserByID(user_id:mongoose.Types.ObjectId) {
+        return this.userRepository.getUserByID(user_id)
     }
 
     async getUserByName(name: string) {

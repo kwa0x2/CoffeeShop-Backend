@@ -13,5 +13,6 @@ export default cleanEnv(process.env, {
     SESSION_SECRET: str(),
     REDIS_HOST: str(),
     REDIS_PORT: port(),
-    REDIS_PASSWORD: str()
+    REDIS_PASSWORD: str(),
+    RABBITMQ_URI: str()
 });

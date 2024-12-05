@@ -1,5 +1,5 @@
 import {BasketItem} from "../../domain/entities/basket";
-import mongoose from "mongoose";
+import mongoose, {mongo} from "mongoose";
 import {redisClient} from "../third-party/redis";
 
 export class BasketRepository {
@@ -23,6 +23,11 @@ export class BasketRepository {
 
     async setBasketByUserID(user_id: mongoose.Types.ObjectId, data: BasketItem[]) {
         await redisClient.set(`basket:${user_id}`, JSON.stringify(data));
+        return true
+    }
+
+    async clearBasketByUserID(user_id:mongoose.Types.ObjectId) {
+        await redisClient.del(`basket:${user_id}`);
         return true
     }
 }
