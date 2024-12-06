@@ -24,7 +24,7 @@ This repository contains the CoffeeShop Backend, a robust backend solution for m
 - **Environment Management:** envalid, dotenv
 - **Containerization:** Docker, Docker Compose
 
-** 🧪 API Testing
+## 🧪 API Testing
 
 **To test the available API endpoints:**
 
