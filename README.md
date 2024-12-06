@@ -10,6 +10,7 @@ This repository contains the CoffeeShop Backend, a robust backend solution for m
 - **Session Management:** Used Redis to manage user sessions for a secure and scalable session handling system.
 - **Error Handling:** Advanced error tracking and monitoring with Sentry.
 - **Environment Configuration:** Managed with envalid and dotenv for flexible and secure setups.
+- **API Testing:** A Postman Collection (![Coffee Shop API](https://github.com/kwa0x2/CoffeeShop-Backend/blob/main/Coffee%20Shop%20API.postman_collection.json)) is included to test API endpoints effortlessly.
 - **Containerization:** Fully containerized with Docker and Docker Compose for easy deployment and scaling.
 
 ## 🛠 Technologies Used
@@ -22,3 +23,11 @@ This repository contains the CoffeeShop Backend, a robust backend solution for m
 - **Error Monitoring:** Sentry
 - **Environment Management:** envalid, dotenv
 - **Containerization:** Docker, Docker Compose
+
+** 🧪 API Testing
+
+**To test the available API endpoints:**
+
+1. Import the ![Coffee Shop API](https://github.com/kwa0x2/CoffeeShop-Backend/blob/main/Coffee%20Shop%20API.postman_collection.json) file into Postman.
+2. Configure the environment variables as needed.
+3. Start testing the endpoints interactively with detailed requests and responses.
